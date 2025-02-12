@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './usuario.css'; 
 
 const Usuario = () => {
@@ -14,8 +15,13 @@ const Usuario = () => {
   const dataCriacao = new Date(usuario.dataCriacaoConta);
   const agora = new Date();
   const anosDeConta = agora.getFullYear() - dataCriacao.getFullYear();
-
   return (
+    <>
+    <div className="container2">
+        <header className="header2">
+          <button className="profile-btn"><Link to='/feed' className="mudacor"> Ir para o Perfil</Link></button>
+        </header>
+      </div>
     <div className="usuario-container">
       {/* Foto de Perfil */}
       <img src={usuario.fotoPerfil} className="foto-perfil" />
@@ -35,6 +41,7 @@ const Usuario = () => {
         </ul>
       </div>
     </div>
+  </>
   );
 };
 
