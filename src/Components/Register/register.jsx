@@ -1,32 +1,29 @@
-import "./login.css";
+import "./register.css";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   return (
     <div className="container">
       <form>
-        <h1>Acesse o sistema</h1>
+        <h1>Crie sua conta</h1>
+        <div className="input-field">
+          <input className="card" type='text' placeholder='Nome completo'/>
+        </div>
         <div className="input-field">
           <input className="card" type='email' placeholder='E-mail'/>
         </div>
         <div className="input-field">
           <input className="card" type='password' placeholder='Senha'/>
         </div>
-
-
-        <div className="recall-forget">
-          <label>
-            <input type="checkbox" />
-            Lembre de mim
-          </label>
-          <a href="#">Esqueceu a senha</a>
+        <div className="input-field">
+          <input className="card" type='password' placeholder='Confirme sua senha'/>
         </div>
-        <button>Entrar</button>
+
+        <button>Cadastrar</button>
 
         <div className="signup-link">
           <p>
-            Não tem uma conta? <Link to="/register">Registre-se</Link>
-
+            Já tem uma conta? <Link to="/">Faça login</Link>
           </p>
         </div>
       </form>
@@ -34,4 +31,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Register;
