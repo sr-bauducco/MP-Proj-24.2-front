@@ -86,3 +86,10 @@
     color: #000; 
     opacity: 1;
   }
+
+  .container .input-field select.card {
+  padding: 10px 0 10px 20px;
+}
+
+  
+  

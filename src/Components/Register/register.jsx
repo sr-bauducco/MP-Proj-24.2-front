@@ -18,6 +18,12 @@ const Register = () => {
         <div className="input-field">
           <input className="card" type='password' placeholder='Confirme sua senha'/>
         </div>
+        <div className="input-field">
+          <select className="card" name="opcao" defaultValue="cliente">
+            <option value="cliente">Cliente</option>
+            <option value="feirante">Feirante</option>
+          </select>
+        </div>
 
         <button>Cadastrar</button>
 
