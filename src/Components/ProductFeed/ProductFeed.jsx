@@ -2,6 +2,18 @@ import { useState } from "react";
 import "./ProductFeed.css";
 
 const ProductFeed = () => {
+  const [showOptions, setShowOptions] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const toggleOptions = () => {
+    setShowOptions(!showOptions);
+  };
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    setShowOptions(false); 
+  };
+
   const [products] = useState([
     {
       id: 1,
@@ -32,15 +44,29 @@ const ProductFeed = () => {
   return (
     <div className="feed-container">
       <header className="feed-header">
-        <h1>Produtos da Feira</h1>
-        <div className="header-actions">
-          <input 
-            type="search" 
-            placeholder="Buscar produtos..." 
-            className="search-input"
-          />
-          <button className="filter-button">Filtrar</button>
-        </div>
+      <div>
+      <h1>Produtos da Feira</h1>
+      <div className="header-actions">
+        <input
+          type="search"
+          placeholder="Buscar produtos..."
+          className="search-input"
+        />
+        <button className="filter-button" onClick={toggleOptions}>
+          Filtrar
+        </button>
+
+        {showOptions && (
+          <ul className="options-list">
+            <li onClick={() => handleOptionClick('Feiras')}>Feiras</li>
+            <li onClick={() => handleOptionClick('Produtos')}>Produtos</li>
+            <li onClick={() => handleOptionClick('Tudo')}>Tudo</li>
+          </ul>
+        )}
+
+        {selectedOption && <p>Opção selecionada: {selectedOption}</p>}
+      </div>
+    </div>
       </header>
 
       <div className="products-grid">

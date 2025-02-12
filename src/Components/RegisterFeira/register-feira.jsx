@@ -20,7 +20,7 @@ const Register = () => {
 
         <div className="signup-link">
           <p>
-            Quer voltar para a pagina princial? <Link to="/">Clique Aqui</Link>
+            Quer voltar para a pagina princial? <Link to="/feed">Clique Aqui</Link>
           </p>
         </div>
       </form>
