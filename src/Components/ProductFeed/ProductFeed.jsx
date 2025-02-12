@@ -1,5 +1,25 @@
 import { useState } from "react";
 import "./ProductFeed.css";
+import PropTypes from 'prop-types';
+
+const Modal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null; // Não renderiza o modal se isOpen for false
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <h2>Escreva algo:</h2>
+        <textarea placeholder="Digite aqui..." />
+        <button onClick={onClose}>Fechar</button>
+      </div>
+    </div>
+  );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,  // Espera um booleano
+  onClose: PropTypes.func.isRequired, // Espera uma função
+};
 
 const ProductFeed = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -40,6 +60,16 @@ const ProductFeed = () => {
       description: "Cenouras orgânicas cultivadas em solo fértil"
     }
   ]);
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setIsModalOpen(true); // Abre o modal
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Fecha o modal
+  };
 
   return (
     <div className="feed-container">
@@ -60,6 +90,7 @@ const ProductFeed = () => {
           <ul className="options-list">
             <li onClick={() => handleOptionClick('Feiras')}>Feiras</li>
             <li onClick={() => handleOptionClick('Produtos')}>Produtos</li>
+            <li onClick={() => handleOptionClick('Produtos')}>Banca</li>
             <li onClick={() => handleOptionClick('Tudo')}>Tudo</li>
           </ul>
         )}
@@ -84,9 +115,13 @@ const ProductFeed = () => {
               <p className="product-price">
                 R$ {product.price.toFixed(2)}
               </p>
-              <button className="contact-button">
-                Contactar Vendedor
-              </button>
+              <div className="botoes">
+                <button className="contact-button">
+                  Contactar Vendedor
+                </button>
+                <button className="contact-button" onClick={handleButtonClick}>Faça uma avaliação</button>
+                  <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
+              </div>
             </div>
           </div>
         ))}
