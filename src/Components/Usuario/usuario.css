@@ -1,0 +1,79 @@
+/* Usuario.css */
+
+/* Estilo da caixa de informações do usuário */
+.usuario-container {
+    max-width:1000px;
+    margin: auto;
+    padding: 100px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+  }
+  
+  /* Estilo da foto de perfil */
+  .foto-perfil {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    border: 4px solid #e5e7eb;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Nome do usuário */
+  .nome-usuario {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 16px;
+  }
+  
+  /* Estilo para o email */
+  .email-usuario {
+    color: #4b5563;
+    font-size: 1.125rem;
+    margin-top: 8px;
+  }
+  
+  /* Texto para "Membro há X anos" */
+  .tempo-conta {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 4px;
+  }
+  
+  /* Caixa de lista de desejos */
+  .lista-desejos {
+    margin-top: 24px;
+    width: 100%;
+    background-color: #f3f4f6;
+    padding: 100px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título da lista de desejos */
+  .titulo-lista {
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  /* Itens da lista de desejos */
+  .lista-desejos ul {
+    list-style-type: none; /* Remove os marcadores (pontinhos) */
+    padding: 0; /* Remove o padding padrão */
+  }
+  
+  .item-desejo {
+    color: #374151;
+    padding: 20px 100px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .item-desejo:last-child {
+    border-bottom: none;
+  }
+  
