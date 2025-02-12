@@ -6,6 +6,7 @@
   
   .feed-header {
     margin-bottom: 30px;
+    margin-top: 30px;
   }
   
   .feed-header h1 {
@@ -128,4 +129,43 @@
 .botoes {
   display: flex;
   gap: 20px;
+}
+/* Estilo do Header */
+.container2 {
+  position: fixed; /* Faz com que o header fique fixo no topo */
+  top: 0; /* Coloca o header no topo */
+  left: 0; /* Garante que o header comece do lado esquerdo */
+  width: 100%; /* O header vai ocupar toda a largura da tela */
+  height: 50px; /* Altura do header */
+  background-color: #4CAF50; /* Cor de fundo */
+  display: flex;
+  align-items: center; /* Alinha o conteúdo verticalmente */
+  justify-content: flex-end; /* Coloca o botão à direita */
+  padding: 0 20px;
+  box-shadow: 0 2px 5px #4CAF50; /* Adiciona uma sombra sutil */
+  z-index: 1000; /* Garante que o header fique sobre outros elementos */
+}
+
+/* Estilo do botão */
+.profile-btn {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  
+}
+
+.profile-btn:hover {
+  background-color: #4CAF50; /* Altera a cor quando passar o mouse */
+  color: #000;
+}
+
+/* Para o conteúdo, adicionar um padding para não ficar escondido atrás do header */
+main {
+  padding-top: 60px; /* Adiciona um espaço superior para o conteúdo não ser coberto pelo header */
+}
+
+
+.mudacor {
+  color: #000;
+  text-decoration: none;
 }

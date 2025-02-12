@@ -34,13 +34,7 @@
     margin: 20px 0 15px;
   }
   
-  .signup-link p a {
-    color: #000;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  
-  .signup-link p a:hover {
+  up-link p a:hover {
     text-decoration: underline;
   }
 
