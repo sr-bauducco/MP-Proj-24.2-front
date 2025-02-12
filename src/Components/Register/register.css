@@ -81,3 +81,8 @@
   .signup-link p a:hover {
     text-decoration: underline;
   }
+
+  .container .input-field input::placeholder {
+    color: #000; 
+    opacity: 1;
+  }
