@@ -18,7 +18,9 @@ const Usuario = () => {
   return (
     <>
     <div className="container2">
-        <header className="header2">
+        <header className="header3">
+          <button className="profile-btn"><Link to='/register-feira' className="mudacor"> Cadastre uma feira </Link></button>
+          <button className="profile-btn"><Link to='/register-product' className="mudacor afasta"> Cadastre um Produto</Link></button>
           <button className="profile-btn"><Link to='/feed' className="mudacor"> Ir para o Perfil</Link></button>
         </header>
       </div>
