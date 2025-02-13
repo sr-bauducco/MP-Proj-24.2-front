@@ -5,7 +5,7 @@ import './register-banca.css';
 const Register = () => {
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [endereço, setEndereço] = useState('');
+  const [endereco, setEndereco] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [dono, setDono] = useState('');
@@ -17,18 +17,17 @@ const Register = () => {
     const bancaData = {
       nome,
       descricao,
-      endereço,
+      endereco,  // Corrigi a variável para "endereco"
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
-      dono
+      dono: parseInt(dono), // Garante que o ID do dono seja um número
     };
 
     try {
       const response = await fetch('http://localhost:8000/bancas/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Supondo que você tenha um sistema de autenticação JWT
+          'Content-Type': 'application/json',  // Adicionando o header correto
         },
         body: JSON.stringify(bancaData),
       });
@@ -37,12 +36,13 @@ const Register = () => {
         throw new Error('Erro ao cadastrar a banca');
       }
 
-      const data = await response.json();
       alert('Banca cadastrada com sucesso!');
       setNome('');
       setDescricao('');
+      setEndereco('');
       setLatitude('');
       setLongitude('');
+      setDono('');
     } catch (error) {
       setErro(error.message);
     }
@@ -52,23 +52,23 @@ const Register = () => {
     <div className="container">
       <form onSubmit={handleSubmit}>
         <h1>Registre sua Banca!</h1>
-        
+
         <div className="input-field">
           <input
             className="card"
-            type='text'
-            placeholder='Nome'
+            type="text"
+            placeholder="Nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
           />
         </div>
-        
+
         <div className="input-field">
           <input
             className="card"
-            type='text'
-            placeholder='Descrição'
+            type="text"
+            placeholder="Descrição"
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
             required
@@ -78,10 +78,10 @@ const Register = () => {
         <div className="input-field">
           <input
             className="card"
-            type='text'
-            placeholder='Endereço'
-            value={endereço}
-            onChange={(e) => setEndereço(e.target.value)}
+            type="text"
+            placeholder="Endereço"
+            value={endereco}
+            onChange={(e) => setEndereco(e.target.value)}
             required
           />
         </div>
@@ -89,35 +89,32 @@ const Register = () => {
         <div className="input-field">
           <input
             className="card"
-            type='number'
-            placeholder='Latitude'
+            type="number"
+            placeholder="Latitude"
             value={latitude}
             onChange={(e) => setLatitude(e.target.value)}
             required
           />
           <input
             className="card"
-            type='number'
-            placeholder='Longitude'
+            type="number"
+            placeholder="Longitude"
             value={longitude}
             onChange={(e) => setLongitude(e.target.value)}
             required
           />
-            <input
+          <input
             className="card"
-            type='number'
-            placeholder='Dono'
+            type="number"
+            placeholder="ID do Dono"
             value={dono}
             onChange={(e) => setDono(e.target.value)}
             required
           />
         </div>
-        
-        
-
 
         {erro && <p style={{ color: 'red' }}>{erro}</p>}
-        
+
         <button type="submit">Cadastrar Banca</button>
 
         <div className="signup-link">
