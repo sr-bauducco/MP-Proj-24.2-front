@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./ProductFeed.css";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
@@ -25,6 +25,7 @@ Modal.propTypes = {
 const ProductFeed = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+  const [products, setProducts] = useState([]); // Adicionando estado para produtos
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -35,33 +36,6 @@ const ProductFeed = () => {
     setShowOptions(false); 
   };
 
-  const [products] = useState([
-    {
-      id: 1,
-      name: "Tomate Orgânico",
-      seller: "Maria da Feira",
-      price: 8.99,
-      image: "/api/placeholder/200/200",
-      description: "Tomates frescos cultivados sem agrotóxicos"
-    },
-    {
-      id: 2,
-      name: "Alface Crespa",
-      seller: "João do Verde",
-      price: 4.50,
-      image: "/api/placeholder/200/200",
-      description: "Alface crespa fresca colhida hoje"
-    },
-    {
-      id: 3,
-      name: "Cenoura Orgânica",
-      seller: "Ana Produtos Naturais",
-      price: 5.99,
-      image: "/api/placeholder/200/200",
-      description: "Cenouras orgânicas cultivadas em solo fértil"
-    }
-  ]);
-  
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -71,6 +45,20 @@ const ProductFeed = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false); // Fecha o modal
   };
+
+  // Requisição para pegar produtos do backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/produtos");
+        const data = await response.json();
+        setProducts(data); // Atualiza o estado com os dados recebidos
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+      }
+    };
+    fetchProducts();
+  }, []); // O array vazio [] garante que a requisição seja feita apenas uma vez
 
   return (
     <>
@@ -109,30 +97,34 @@ const ProductFeed = () => {
         </header>
 
         <div className="products-grid">
-          {products.map((product) => (
-            <div key={product.id} className="product-card">
-              <img 
-                src={product.image} 
-                alt={product.name} 
-                className="product-image"
-              />
-              <div className="product-info">
-                <h3>{product.name}</h3>
-                <p className="seller-name">Vendedor: {product.seller}</p>
-                <p className="product-description">{product.description}</p>
-                <p className="product-price">
-                  R$ {product.price.toFixed(2)}
-                </p>
-                <div className="botoes">
-                  <button className="contact-button">
-                    Contactar Vendedor
-                  </button>
-                  <button className="contact-button" onClick={handleButtonClick}>Faça uma avaliação</button>
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div key={product.id} className="product-card">
+                <img 
+                  src={product.image} 
+                  alt={product.name} 
+                  className="product-image"
+                />
+                <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p className="seller-name">Vendedor: {product.seller}</p>
+                  <p className="product-description">{product.description}</p>
+                  <p className="product-price">
+                    R$ {product.price.toFixed(2)}
+                  </p>
+                  <div className="botoes">
+                    <button className="contact-button">
+                      Contactar Vendedor
+                    </button>
+                    <button className="contact-button" onClick={handleButtonClick}>Faça uma avaliação</button>
                     <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>Carregando produtos...</p> // Mensagem caso ainda não tenha produtos
+          )}
         </div>
       </div>
     </>
