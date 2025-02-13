@@ -3,30 +3,15 @@ import "./ProductFeed.css";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
-const Modal = ({ isOpen, onClose }) => {
-  if (!isOpen) return null; // Não renderiza o modal se isOpen for false
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Escreva algo:</h2>
-        <textarea placeholder="Digite aqui..." />
-        <button onClick={onClose}>Fechar</button>
-      </div>
-    </div>
-  );
-};
-
-Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,  // Espera um booleano
-  onClose: PropTypes.func.isRequired, // Espera uma função
-};
+console.log("Arquivo ProductFeed.jsx carregado!");
 
 const ProductFeed = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [products, setProducts] = useState([]); // Adicionando estado para produtos
-
+ 
+  
   const toggleOptions = () => {
     setShowOptions(!showOptions);
   };
@@ -49,16 +34,45 @@ const ProductFeed = () => {
   // Requisição para pegar produtos do backend
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/produtos");
-        const data = await response.json();
-        setProducts(data); // Atualiza o estado com os dados recebidos
-      } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
-      }
+        try {
+            console.log("Fazendo requisição ao backend...");
+            
+            const response = await fetch("http://localhost:8000/produtos"); // Sem headers
+            
+            if (!response.ok) {
+                throw new Error(`Erro: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Dados recebidos:", data);
+            setProducts(data);
+        } catch (error) {
+            console.error("Erro ao buscar produtos:", error);
+        }
     };
+
     fetchProducts();
-  }, []); // O array vazio [] garante que a requisição seja feita apenas uma vez
+}, []);
+  
+
+const Modal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null; // Não renderiza o modal se isOpen for false
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <h2>Escreva algo:</h2>
+        <textarea placeholder="Digite aqui..." />
+        <button onClick={onClose}>Fechar</button>
+      </div>
+    </div>
+  );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,  // Espera um booleano
+  onClose: PropTypes.func.isRequired, // Espera uma função
+};
 
   return (
     <>
