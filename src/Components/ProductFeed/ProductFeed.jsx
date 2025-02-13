@@ -3,111 +3,113 @@ import "./ProductFeed.css";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
-
 console.log("Arquivo ProductFeed.jsx carregado!");
 
 const ProductFeed = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
-  const [products, setProducts] = useState([]); // Adicionando estado para produtos
- 
-  
+  const [products, setProducts] = useState([]); // Corrigindo o nome da função
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const toggleOptions = () => {
     setShowOptions(!showOptions);
   };
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
-    setShowOptions(false); 
+    setShowOptions(false);
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleButtonClick = () => {
-    setIsModalOpen(true); // Abre o modal
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Fecha o modal
+    setIsModalOpen(false);
   };
 
   // Requisição para pegar produtos do backend
   useEffect(() => {
-    const fetchProducts = async () => {
-        try {
-            console.log("Fazendo requisição ao backend...");
-            
-            const response = await fetch("http://localhost:8000/produtos"); // Sem headers
-            
-            if (!response.ok) {
-                throw new Error(`Erro: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log("Dados recebidos:", data);
-            setProducts(data);
-        } catch (error) {
-            console.error("Erro ao buscar produtos:", error);
+    fetch("http://localhost:8000/produtos")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erro ao buscar produtos");
         }
-    };
+        return response.json();
+      })
+      .then(data => setProducts(data)) // Corrigindo o erro no setProducts
+      .catch(error => {
+        console.error("Erro:", error);
+        // Adicionando produtos mockados caso a requisição falhe
+        setProducts([
+          {
+            id: 1,
+            name: "Maçã Vermelha",
+            seller: "João Silva",
+            description: "Maçãs frescas direto do produtor.",
+            price: 5.99,
+            image: "https://via.placeholder.com/150"
+          },
+          {
+            id: 2,
+            name: "Banana Prata",
+            seller: "Maria Oliveira",
+            description: "Bananas maduras e doces.",
+            price: 3.50,
+            image: "https://via.placeholder.com/150"
+          }
+        ]);
+      });
+  }, []);
 
-    fetchProducts();
-}, []);
-  
-
-const Modal = ({ isOpen, onClose }) => {
-  if (!isOpen) return null; // Não renderiza o modal se isOpen for false
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Escreva algo:</h2>
-        <textarea placeholder="Digite aqui..." />
-        <button onClick={onClose}>Fechar</button>
+  const Modal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+    return (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <h2>Escreva algo:</h2>
+          <textarea placeholder="Digite aqui..." />
+          <button onClick={onClose}>Fechar</button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,  // Espera um booleano
-  onClose: PropTypes.func.isRequired, // Espera uma função
-};
+  Modal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+  };
 
   return (
     <>
       <div className="container2">
         <header className="header2">
-          <button className="profile-btn"><Link to='/usuario' className="mudacor"> Ir para o Perfil</Link></button>
+          <button className="profile-btn">
+            <Link to='/usuario' className="mudacor"> Ir para o Perfil</Link>
+          </button>
         </header>
       </div>
 
       <div className="feed-container">
         <header className="feed-header">
-        <div>
-        <h1>Produtos da Feira</h1>
-        <div className="header-actions">
-          <input
-            type="search"
-            placeholder="Buscar produtos..."
-            className="search-input"
-          />
-          <button className="filter-button" onClick={toggleOptions}>
-            Filtrar
-          </button>
+          <div>
+            <h1>Produtos da Feira</h1>
+            <div className="header-actions">
+              <input type="search" placeholder="Buscar produtos..." className="search-input" />
+              <button className="filter-button" onClick={toggleOptions}>Filtrar</button>
 
-          {showOptions && (
-            <ul className="options-list">
-              <li onClick={() => handleOptionClick('Feiras')}>Feiras</li>
-              <li onClick={() => handleOptionClick('Produtos')}>Produtos</li>
-              <li onClick={() => handleOptionClick('Produtos')}>Banca</li>
-              <li onClick={() => handleOptionClick('Tudo')}>Tudo</li>
-            </ul>
-          )}
+              {showOptions && (
+                <ul className="options-list">
+                  <li onClick={() => handleOptionClick('Feiras')}>Feiras</li>
+                  <li onClick={() => handleOptionClick('Produtos')}>Produtos</li>
+                  <li onClick={() => handleOptionClick('Banca')}>Banca</li>
+                  <li onClick={() => handleOptionClick('Tudo')}>Tudo</li>
+                </ul>
+              )}
 
-          {selectedOption && <p>Opção selecionada: {selectedOption}</p>}
-        </div>
-      </div>
+              {selectedOption && <p>Opção selecionada: {selectedOption}</p>}
+            </div>
+          </div>
         </header>
 
         <div className="products-grid">
@@ -127,17 +129,17 @@ Modal.propTypes = {
                     R$ {product.price.toFixed(2)}
                   </p>
                   <div className="botoes">
-                    <button className="contact-button">
-                      Contactar Vendedor
+                    <button className="contact-button">Contactar Vendedor</button>
+                    <button className="contact-button" onClick={handleButtonClick}>
+                      Faça uma avaliação
                     </button>
-                    <button className="contact-button" onClick={handleButtonClick}>Faça uma avaliação</button>
                     <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <p>Carregando produtos...</p> // Mensagem caso ainda não tenha produtos
+            <p>Carregando produtos...</p>
           )}
         </div>
       </div>
