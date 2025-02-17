@@ -30,7 +30,7 @@ const ProductFeed = () => {
 
   // Requisição para pegar produtos do backend
   useEffect(() => {
-    fetch("http://localhost:8000/produtos")
+    fetch("http://localhost:8000/produtos/")
       .then(response => {
         if (!response.ok) {
           throw new Error("Erro ao buscar produtos");
@@ -44,18 +44,18 @@ const ProductFeed = () => {
         setProducts([
           {
             id: 1,
-            name: "Maçã Vermelha",
-            seller: "João Silva",
-            description: "Maçãs frescas direto do produtor.",
-            price: 5.99,
+            nome: "Maçã Vermelha",
+            vendedor: "João Silva",
+            descricao: "Maçãs frescas direto do produtor.",
+            preco: 5.99,
             image: "https://via.placeholder.com/150"
           },
           {
             id: 2,
-            name: "Banana Prata",
-            seller: "Maria Oliveira",
-            description: "Bananas maduras e doces.",
-            price: 3.50,
+            nome: "Banana Prata",
+            vendedor: "Maria Oliveira",
+            descricao: "Bananas maduras e doces.",
+            preco: 3.50,
             image: "https://via.placeholder.com/150"
           }
         ]);
@@ -118,24 +118,25 @@ const ProductFeed = () => {
               <div key={product.id} className="product-card">
                 <img 
                   src={product.image} 
-                  alt={product.name} 
+                  alt={product.nome} 
                   className="product-image"
                 />
                 <div className="product-info">
-                  <h3>{product.name}</h3>
-                  <p className="seller-name">Vendedor: {product.seller}</p>
-                  <p className="product-description">{product.description}</p>
-                  <p className="product-price">
-                    R$ {product.price.toFixed(2)}
-                  </p>
-                  <div className="botoes">
-                    <button className="contact-button">Contactar Vendedor</button>
-                    <button className="contact-button" onClick={handleButtonClick}>
-                      Faça uma avaliação
-                    </button>
-                    <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
-                  </div>
-                </div>
+  <h3>{product.nome}</h3>
+  <p className="seller-name">Vendedor: {product.vendedor}</p>
+  <p className="product-description">{product.descricao}</p>
+  <p className="product-price">
+    R$ {(parseFloat(product.preco) || 0).toFixed(2)}  {/* Convertendo para número e aplicando toFixed */}
+  </p>
+  <div className="botoes">
+    <button className="contact-button">Contactar Vendedor</button>
+    <button className="contact-button" onClick={handleButtonClick}>
+      Faça uma avaliação
+    </button>
+    <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
+  </div>
+</div>
+
               </div>
             ))
           ) : (

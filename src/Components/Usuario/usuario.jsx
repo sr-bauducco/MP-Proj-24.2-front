@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './usuario.css'; 
+import './usuario.css';
 
 const Usuario = () => {
   const [usuario, setUsuario] = useState({
@@ -22,7 +22,7 @@ const Usuario = () => {
           throw new Error("Usuário não autenticado. Faça login.");
         }
 
-        const response = await fetch('http://localhost:8000/auth/login/', {
+        const response = await fetch('http://localhost:8000/auth/user/', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -36,10 +36,13 @@ const Usuario = () => {
 
         const data = await response.json();
 
+        // Atualiza o estado com os dados do usuário
         setUsuario((prev) => ({
           ...prev,
-          nome: data.user.username,
-          email: data.user.email,
+          nome: data.username,
+          email: data.email,
+          fotoPerfil: data.fotoPerfil || prev.fotoPerfil,  // Caso tenha uma foto no backend
+          dataCriacaoConta: data.dataCriacaoConta || prev.dataCriacaoConta,  // Caso tenha essa data no backend
         }));
       } catch (error) {
         setErro(error.message);
@@ -64,7 +67,7 @@ const Usuario = () => {
           <button className="profile-btn"><Link to='/register-banca' className="mudacor"> Cadastre uma Banca</Link></button>
         </header>
       </div>
-      
+
       <div className="usuario-container">
         {/* Foto de Perfil */}
         <img src={usuario.fotoPerfil} className="foto-perfil" alt="Foto de perfil" />
